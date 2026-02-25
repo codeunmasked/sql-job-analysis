@@ -20,11 +20,13 @@ GROUP BY status;
 
 -- 4. Candidate name + job title for all applications
 SELECT 
-    c.name AS candidate_name,
-    j.job_title
-FROM applications a
-JOIN candidates c ON a.candidate_id = c.candidate_id
-JOIN jobs j ON a.job_id = j.job_id;
+    candidates.name AS candidate_name,
+    jobs.job_title
+FROM applications
+JOIN candidates 
+    ON applications.candidate_id = candidates.candidate_id
+JOIN jobs 
+    ON applications.job_id = jobs.job_id;
 
 -- 5. Job that received the highest number of applications
 SELECT 
