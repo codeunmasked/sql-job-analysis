@@ -30,29 +30,32 @@ JOIN jobs
 
 -- 5. Job that received the highest number of applications
 SELECT 
-    j.job_title,
+    jobs.job_title,
     COUNT(*) AS application_count
-FROM applications a
-JOIN jobs j ON a.job_id = j.job_id
-GROUP BY j.job_title
+FROM applications
+JOIN jobs 
+    ON applications.job_id = jobs.job_id
+GROUP BY jobs.job_title
 ORDER BY application_count DESC
 LIMIT 1;
 
 -- 6. Selection count per job
 SELECT 
-    j.job_title,
+    jobs.job_title,
     COUNT(*) AS selected_count
-FROM applications a
-JOIN jobs j ON a.job_id = j.job_id
-WHERE a.status = 'Selected'
-GROUP BY j.job_title;
+FROM applications
+JOIN jobs 
+    ON applications.job_id = jobs.job_id
+WHERE applications.status = 'Selected'
+GROUP BY jobs.job_title;
 
 -- 7. Average experience of selected candidates
 SELECT 
-    AVG(c.experience_years) AS avg_experience_selected
-FROM applications a
-JOIN candidates c ON a.candidate_id = c.candidate_id
-WHERE a.status = 'Selected';
+    AVG(candidates.experience_years) AS avg_experience_selected
+FROM applications
+JOIN candidates 
+    ON applications.candidate_id = candidates.candidate_id
+WHERE applications.status = 'Selected';
 
 -- 8. Classify candidates as Fresher or Experienced
 SELECT 
@@ -75,9 +78,8 @@ HAVING COUNT(*) >
         SELECT COUNT(*) AS app_count
         FROM applications
         GROUP BY job_id
-    ) t
+    )
 );
-
 -- 10. Candidates who applied to more than one job
 SELECT candidate_id
 FROM applications
